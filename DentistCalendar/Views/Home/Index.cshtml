@@ -6,6 +6,8 @@
     <link href='/lib/fullcalendar/core/main.css' rel='stylesheet' />
     <link href='/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href="~/lib/fullcalendar/timegrid/main.min.css" rel="stylesheet" />
+    <link href="/lib/fullcalendar/bootstrap/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
 
@@ -18,23 +20,30 @@
     <script src="~/lib/fullcalendar/core/main.js"></script>
     <script src='/lib/fullcalendar/daygrid/main.js'></script>
     <script src="~/lib/fullcalendar/timegrid/main.js"></script>
+    <script src="~/lib/fullcalendar/bootstrap/main.js"></script>
     <script src="/lib/fullcalendar/core/locales/tr.js"></script> <!--TÜRKÇE DİL PAKETİ-->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['dayGrid', 'timeGrid'],
+                plugins: ['dayGrid', 'timeGrid', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                bootstrapFontAwesome: {
+                    timeGridWeek: 'calendar'
+                },
                 locale: 'tr', //TÜRKÇE DİL DESTEĞİ
                 header: {
-                    left: 'prev, next, today', //solda ileri ve geri olsun
+                    left: 'prev, next, today, getDate', //solda ileri ve geri olsun
                     center: 'title', //başlık ortada olsun
-                    right: 'dayGridMonth, timeGridWeek, timeGridDay' //sağda ay olsun
+                    right: 'dayGridMonth, timeGridWeek, timeGridDay, timeGridForFourDay' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
                 },
+               
                 defaultView: 'dayGridMonth', //takvim default olarak aylık görüntü şekilde gelsin 
                 // weekends: false //takvim haftasonu günleri göstermesin dedik
-                weekends: true, //haftasonu günler görünür olsun
+                weekends: true, //haftasonu gizle/göster 
                 allDaySlot: false, // takvim en üst bölümündeki tüm gün satırını kaldırdık. 
+               // firstDay: 0, // default olarak ilk gün pazar olsun bunun eklemeseydik pazartesi ilk gün hangi gündeysek o günden takvimi başlatmak içinde kullanabiliriz
                 titleFormat: {
                     year: 'numeric',
                     month: 'long',
@@ -46,10 +55,38 @@
                     //month: 'numeric',
                     weekday: 'long'
                     //day: 'numeric'
-                }
+                },
+                views: {
+                    timeGridForFourDay: { //sadece 4 günü göstersin dedik bunu özel olarak oluşturduk.
+                        type: 'timeGrid',
+                      //dayCount: 4, // bulunduğun tarihten itibaren önündeki 4 günü gösterir gizlenmiş gün varsa onları atlar cumartesi pazarı atlar pazartesiyi gösterir ***
+                        duration: {days:4}, //4 dediğimizde bulunduğun tarihten itibaren gizlenmiş gün varsa onları göstermez cuma bakan biri cuma ve pazartesiyi görür
+                        buttonText: '4 Gün'
+                    }
+                },
+                customButtons: {
+                    getDate: {
+                        text: 'date',
+                        click: function () {
+                            var date = new Date();
+                            alert(date);
+                        }
+                    }
+                },
+                footer: {
+                    left: 'getDate', //solda ileri ve geri olsun
+                    center: 'title', //başlık ortada olsun
+                    right: 'timeGridForFourDay' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
+                },
+                //buttonText: {
+                //    today: 'Bugün gün',
+                //    month: 'Ay ve ay',
+                //    week: 'hafta mı hafta',
+                //    day : 'gün gün'
+                //}
             });
 
             calendar.render();
-        });
+        })
     </script>
 }
