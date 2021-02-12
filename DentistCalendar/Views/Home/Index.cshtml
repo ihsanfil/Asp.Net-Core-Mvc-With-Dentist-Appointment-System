@@ -30,7 +30,9 @@
                 plugins: ['dayGrid', 'timeGrid', 'bootstrap'],
                 themeSystem: 'bootstrap',
                 bootstrapFontAwesome: {
-                    timeGridWeek: 'calendar'
+                    dayGridMonth: 'calendar', // dayGridMonth isim değilde takvim iconu olarak görünecek fontawesome class'ı yazdık buraya
+                    prev: 'fa-chevron-circle-left',
+                    next: 'fa-chevron-circle-right'
                 },
                 locale: 'tr', //TÜRKÇE DİL DESTEĞİ
                 header: {
@@ -38,7 +40,27 @@
                     center: 'title', //başlık ortada olsun
                     right: 'dayGridMonth, timeGridWeek, timeGridDay, timeGridForFourDay' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
                 },
-               
+               footer: {
+                    left: 'prevYear', //solda ileri ve geri olsun
+                    // center: 'title', //başlık ortada olsun
+                    right: 'nextYear' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
+                },   
+               /******== SAAT AYARLARI ==********/
+                //  slotDuration: '00:15:00', //takvimdeki saat aralıklarını burada belirliyoruz ***
+               //   slotLabelInterval: '00:15:00', // kaç dakika aralıklarla satırlarda saat bilgisi yazsın
+                //  slotLabelFormat: { // tam saatleride 6:00 6:30 gibi göster dedik default olarak sadece 6 diyodu
+               //     hour: '2-digit',
+               //     minute: '2-digit'
+                   // meridiem: 'short' dil en olduğunda saatleri 06:00am gibi göstermeye yarıyor
+               // },
+                handleWindowResize: true,
+                windowResizeDelay: 1000, //ekran küçüldükten ne kadar sonra takvim ekrana göre boyutlansın default olarak 100
+                windowResize: function (view) {
+                    alert('Takvim Yeniden Boyutlandırıldı');
+                },
+                //Height: 450,
+                //contentHeight: 650, //takvimin içerik yüksekliği 650px olsun dedik
+                //aspectRatio: 5, //satır sütun boyutlandırma her bir karede diyebiliriz
                 defaultView: 'dayGridMonth', //takvim default olarak aylık görüntü şekilde gelsin 
                 // weekends: false //takvim haftasonu günleri göstermesin dedik
                 weekends: true, //haftasonu gizle/göster 
@@ -72,12 +94,8 @@
                             alert(date);
                         }
                     }
-                },
-                footer: {
-                    left: 'getDate', //solda ileri ve geri olsun
-                    center: 'title', //başlık ortada olsun
-                    right: 'timeGridForFourDay' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
-                },
+                }
+                
                 //buttonText: {
                 //    today: 'Bugün gün',
                 //    month: 'Ay ve ay',
