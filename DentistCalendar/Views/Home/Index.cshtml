@@ -7,6 +7,7 @@
     <link href='/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href="~/lib/fullcalendar/timegrid/main.min.css" rel="stylesheet" />
     <link href="/lib/fullcalendar/bootstrap/main.css" rel="stylesheet" />
+    <link href="/lib/fullcalendar/list/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
@@ -20,6 +21,8 @@
     <script src="~/lib/fullcalendar/core/main.js"></script>
     <script src='/lib/fullcalendar/daygrid/main.js'></script>
     <script src="~/lib/fullcalendar/timegrid/main.js"></script>
+    <script src="~/lib/fullcalendar/list/main.js"></script>
+    <script src="~/lib/fullcalendar/interaction/main.js"></script>
     <script src="~/lib/fullcalendar/bootstrap/main.js"></script>
     <script src="/lib/fullcalendar/core/locales/tr.js"></script> <!--TÜRKÇE DİL PAKETİ-->
     <script>
@@ -27,39 +30,49 @@
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['dayGrid', 'timeGrid', 'bootstrap'],
+                plugins: ['interaction','dayGrid', 'timeGrid','list', 'bootstrap'],
                 themeSystem: 'bootstrap',
                 bootstrapFontAwesome: {
                     dayGridMonth: 'calendar', // dayGridMonth isim değilde takvim iconu olarak görünecek fontawesome class'ı yazdık buraya
                     prev: 'fa-chevron-circle-left',
-                    next: 'fa-chevron-circle-right'
+                    next: 'fa-chevron-circle-right',
+                    listWeek: 'fa-list'
                 },
                 locale: 'tr', //TÜRKÇE DİL DESTEĞİ
                 header: {
                     left: 'prev, next, today, getDate', //solda ileri ve geri olsun
                     center: 'title', //başlık ortada olsun
-                    right: 'dayGridMonth, timeGridWeek, timeGridDay, timeGridForFourDay' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
+                    right: 'dayGridMonth, timeGridWeek, timeGridDay, timeGridForFourDay, listWeek' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
+                    //listDay, listWeek, listMonth, listYear
                 },
                footer: {
                     left: 'prevYear', //solda ileri ve geri olsun
                     // center: 'title', //başlık ortada olsun
                     right: 'nextYear' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
                 },   
+
                /******== SAAT AYARLARI ==********/
+                //scrollTime: '08:00:00', // takvimde 8:00'den küçük saatlerde görünür ama kullanıcı ilk olarak 8:00 i görür
+                //minTime : '08:00:00', //takvim saat başlangıcı minumum 9.30 olsun
+                //maxTime: '21:00:00', //takvim saat bitiş maximum 17.00 olsun
                 //  slotDuration: '00:15:00', //takvimdeki saat aralıklarını burada belirliyoruz ***
-               //   slotLabelInterval: '00:15:00', // kaç dakika aralıklarla satırlarda saat bilgisi yazsın
-                //  slotLabelFormat: { // tam saatleride 6:00 6:30 gibi göster dedik default olarak sadece 6 diyodu
-               //     hour: '2-digit',
-               //     minute: '2-digit'
-                   // meridiem: 'short' dil en olduğunda saatleri 06:00am gibi göstermeye yarıyor
-               // },
-                handleWindowResize: true,
-                windowResizeDelay: 1000, //ekran küçüldükten ne kadar sonra takvim ekrana göre boyutlansın default olarak 100
-                windowResize: function (view) {
-                    alert('Takvim Yeniden Boyutlandırıldı');
+                //   slotLabelInterval: '00:15:00', // kaç dakika aralıklarla satırlarda saat bilgisi yazsın
+                  slotLabelFormat: { // tam saatleride 6:00 6:30 gibi göster dedik default olarak sadece 6 diyodu
+                     hour: '2-digit',
+                     minute: '2-digit'
+                    // meridiem: 'short' //dil en olduğunda saatleri 06:00am gibi göstermeye yarıyor
                 },
+                fixedWeekCount: true, //default olarak true gelir ay görünümündeyken 6 haftayı gösterir false yapınca diğer ay'a ait günleri gizler
+                showNonCurrentDates: false, // default olarak true gelir ay görünümündeyken o ay'a ait olmayan günlerin kolanlarını boş olarak gösterir
+
+               /******== TARAYICIYA BOYUTLANDIRMA AYARLARI ==********/
+                //handleWindowResize: true,
+                //windowResizeDelay: 1000, //ekran küçüldükten ne kadar sonra takvim ekrana göre boyutlansın default olarak 100
+                //windowResize: function (view) {
+                //    alert('Takvim Yeniden Boyutlandırıldı');
+                //},
                 //Height: 450,
-                //contentHeight: 650, //takvimin içerik yüksekliği 650px olsun dedik
+                 contentHeight: 650, //takvimin içerik yüksekliği 650px olsun dedik
                 //aspectRatio: 5, //satır sütun boyutlandırma her bir karede diyebiliriz
                 defaultView: 'dayGridMonth', //takvim default olarak aylık görüntü şekilde gelsin 
                 // weekends: false //takvim haftasonu günleri göstermesin dedik
@@ -86,6 +99,12 @@
                         buttonText: '4 Gün'
                     }
                 },
+                //buttonText: {
+                //    today: 'Bugün gün',
+                //    month: 'Ay ve ay',
+                //    week: 'hafta mı hafta',
+                //    day : 'gün gün'
+                //}
                 customButtons: {
                     getDate: {
                         text: 'date',
@@ -94,17 +113,43 @@
                             alert(date);
                         }
                     }
+                },
+                timeZone: 'UTC', //Default olarak local olarak gelir kullanıcının sistem saatini gösterir UTC yaparsak evrensel saat dilimini kullanır
+                events: [
+                    {
+                        id:'x',
+                        title: 'Merhaba X',
+                        start: '2021-02-14T08:00:00.000Z',
+                        end: '2021-02-14T08:30:00.000Z'
+                    },
+                    {
+                        id: 'y',
+                        title: 'Merhaba Y',
+                        start: '2021-02-14T14:00:00.000Z',
+                        end: '2021-02-14T14:30:00.000Z'
+                    },
+                    {
+                        id: 'm',
+                        title: 'Merhaba m',
+                        start: '2021-02-14T16:00:00.000Z',
+                        end: '2021-02-14T16:30:00.000Z'
+                    },
+                ],
+                selectable: true, //takvimde alanların seçilebilir olmasına izin ver
+                select: function (selectionInfo) {
+                    //istediğim kod
+                    console.log(selectionInfo);
                 }
                 
-                //buttonText: {
-                //    today: 'Bugün gün',
-                //    month: 'Ay ve ay',
-                //    week: 'hafta mı hafta',
-                //    day : 'gün gün'
-                //}
             });
 
             calendar.render();
+            var events = calendar.getEvents();
+            console.log(events);
+
+            var id = 'x';
+            var event = calendar.getEventById(id);
+            console.log(event.title);
         })
     </script>
 }
