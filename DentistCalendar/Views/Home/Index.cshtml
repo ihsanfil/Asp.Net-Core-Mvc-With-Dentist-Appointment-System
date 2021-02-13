@@ -40,7 +40,7 @@
                 },
                 locale: 'tr', //TÜRKÇE DİL DESTEĞİ
                 header: {
-                    left: 'prev, next, today, getDate', //solda ileri ve geri olsun
+                    left: 'prev, next, today, addEvent', //solda ileri ve geri olsun
                     center: 'title', //başlık ortada olsun
                     right: 'dayGridMonth, timeGridWeek, timeGridDay, timeGridForFourDay, listWeek' //sağda ay olsun //timeGridForFourDay ile kendimiz kısıtlama oluşturduk 4 gün
                     //listDay, listWeek, listMonth, listYear
@@ -101,19 +101,41 @@
                 },
                 //buttonText: {
                 //    today: 'Bugün gün',
-                //    month: 'Ay ve ay',
+                //    month: 'Ay ve ay',calendar.getEvents();
                 //    week: 'hafta mı hafta',
                 //    day : 'gün gün'
                 //}
                 customButtons: {
-                    getDate: {
-                        text: 'date',
+                    addEvent: {
+                        text: 'Ekle',
                         click: function () {
-                            var date = new Date();
-                            alert(date);
+                            //var newEvent = {
+                            //    id:"a",
+                            //    title: 'New Event',
+                            //    start: '2021-02-14T18:00:00.000Z',
+                            //    end: '2021-02-14T18:30:00.000Z'
+                            //}
+                            calendar.addEvent(newEvent);
                         }
                     }
                 },
+
+                /**== ETKİNLİK RENK AYARLARI ==**/
+                //eventColor: '#000', // event arkaplan rengi
+                //eventBackgroundColor: 'grey', // event arkaplan rengi 
+                //eventBorderColor:'black', //event çerçeve rengi
+                //eventTextColor:'red', //event text rengi
+
+                eventTimeFormat: { //event lerin üzerinde yazan başlangıç ve bitiş zamanlarını ayarlama
+                    hour : '2-digit',
+                    minute: '2-digit',
+                    //second: '2-digit',
+                    //omitZeroMinute: true,
+                    //meridiem: 'narrow' //narrow olursa pm am yerine p,a gibi yazıyor saatlerin yanına dil en olacak tabi
+                },
+                //displayEventTime: false, // event'ın üstünde başlangıç ve bitiş zamanını göstereyim mi seçeneği default olarak true geliyor
+                //displayEventEnd: false, // event bitiş zamanını gizle/göster default olarak true
+                //eventOrder: 'title', //alacağı değerler start , duration, allDay, title
                 timeZone: 'UTC', //Default olarak local olarak gelir kullanıcının sistem saatini gösterir UTC yaparsak evrensel saat dilimini kullanır
                 events: [
                     {
@@ -124,32 +146,62 @@
                     },
                     {
                         id: 'y',
-                        title: 'Merhaba Y',
-                        start: '2021-02-14T14:00:00.000Z',
-                        end: '2021-02-14T14:30:00.000Z'
+                        title: 'A Merhaba Y',
+                        start: '2021-02-14T15:00:00.000Z',
+                        end: '2021-02-14T15:30:00.000Z'
                     },
-                    {
-                        id: 'm',
-                        title: 'Merhaba m',
-                        start: '2021-02-14T16:00:00.000Z',
-                        end: '2021-02-14T16:30:00.000Z'
-                    },
+
                 ],
+                eventRender: function (info) {
+                    console.log(info.event.title);
+                },
                 selectable: true, //takvimde alanların seçilebilir olmasına izin ver
                 select: function (selectionInfo) {
                     //istediğim kod
-                    console.log(selectionInfo);
-                }
-                
+                    //console.log(selectionInfo);
+                },
+                eventClick: function (info) { //event'e tıklandığında
+                    alert(info.event.title);
+                },
+                //eventMouseEnter: function (info) { //mouse event'in üstüne geldiğinde
+                //    alert(info.event.start);                        
+                //},
+                //eventMouseLeave: function (info) { //mouse event'in üstüne ayrıldığında
+                //    alert(info.event.id);
+                //}
+                editable: true, // event editlemeyi aç
+                //eventStartEditable: false, // event başlangıç saatini sabit tutup bitişini değiştirebilme özelliği
+                //eventDurationEditable: false  //event başlangıç ve bitiş saatini değişime kapat
+                //eventDragMinDistance: 100 // eventi aşağı çektiğimizde 100px çekildikten sonra değişimi kabul etsin
+                // dragRevertDuration: 1500 //yanlış sürükleme yaptığımda ne kadar milisaniye sonra geri gelsin default'u 500
+                // dragScroll : false //false yaparsak event sürüklerken sroll' u kapatıyo
+                //snapDuration:'00:15:00' //sürüklerken ne kadar dakikalık geçişler yapsın
+                //eventOverlap: function (stillEvent, movingEvent) { // bir eventi aynı tarih saat olan başka event üzerine taşınmasına izin verme
+                //    return false;
+                //},
+                //eventConstraint: {
+                //    startTime: '08:00', //izin verilen saatler
+                //    endTime: '19:00', //izin verilen saatler
+                //    daysOfWeek:[1,7] // haftanın 1.2.3 gününe güncellemeye izin ver
+                //},
+                //eventAllow: function (dropInfoEvent, draggedEvent) {
+                //    console.log(dropInfoEvent.start); //sürüklenen event'in başlangıç tarihi
+                //    if (dropInfoEvent.start < '10:00:00') {
+                //        alert("küçük");
+                //    }
+                //    return true;
+                //}
             });
 
             calendar.render();
             var events = calendar.getEvents();
-            console.log(events);
+           // console.log(events);
 
             var id = 'x';
             var event = calendar.getEventById(id);
-            console.log(event.title);
+          //  console.log(event.title);
+
+            //calendar.renderEvents(); // eventleri tekrar render et dedik.
         })
     </script>
 }
