@@ -433,3 +433,5 @@ C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Den
 C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
 C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Razor\Views\Account\Denied.cshtml.g.cs
+C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Secretary.cshtml.g.cs
+C:\Users\MSİ\Desktop\Dentist-System\DentistCalendar\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Dentist.cshtml.g.cs
