@@ -19,17 +19,20 @@ namespace DentistCalendar.Models
         [Required(ErrorMessage = "Lütfen Soyadınızı Belirtiniz.")]
         [Display(Name = "Soyadınız:")]
         public string SurName { get; set; }
+
         [Required(ErrorMessage = "Lütfen Bir Şifrenizi Belirleyiniz.")]
         [Display(Name = "Şifreniz:")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
         [Required(ErrorMessage = "Lütfen Bir Eposta Belirtiniz.")]
         [Display(Name = "Emailiniz:")]
         [EmailAddress(ErrorMessage ="Lütfen email alanını kontrol ediniz.")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Lütfen Randevu Rengi Belirtiniz.")]
+
         [Display(Name = "Randevu Rengi:")]
         public string Color { get; set; }
+
         [Display(Name = "Doktorum")]
         public bool IsDentist { get; set; }
     }
