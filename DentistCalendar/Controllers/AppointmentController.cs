@@ -16,17 +16,19 @@ namespace DentistCalendar.Controllers
         public AppointmentController(ApplicationDbContext context)
         {
             _context = context;
-        }
-       
+        }       
         public JsonResult GetAppointment()
         {
             var model = _context.Appointments.Include(x => x.User).Select(x => new AppointmentViewModel() //Randevuları ve ona ait doktorları getir
             {
+                Id = x.Id,
                 Dentitst = x.User.Name + " " + x.User.SurName, //doktor
-                Patient = x.PatientName + " " + x.PatientSurName, //hasta
+                PatientName = x.PatientName, //hasta
+                PatientSurName = x.PatientSurName, //hasta
                 StartDate = x.StartDate,
                 EndDate= x.EndDate,
                 Description = x.Description,
+                Color = x.User.Color,
                 UserId = x.UserId
             });
             return Json(model);
@@ -37,10 +39,12 @@ namespace DentistCalendar.Controllers
                 .Include(x => x.User).Select(x => new AppointmentViewModel() 
             {
                 Dentitst = x.User.Name + " " + x.User.SurName,
-                Patient = x.PatientName + " " + x.PatientSurName, 
+                PatientName = x.PatientName, 
+                PatientSurName =  x.PatientSurName, 
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
                 Description = x.Description,
+                Color = x.User.Color,
                 UserId = x.UserId
             });
             return Json(model);
@@ -83,7 +87,6 @@ namespace DentistCalendar.Controllers
             }
             return Json("200");
         }
-
         public JsonResult DeleteAppointment(int id = 0) //Randevu silme işlemi
         {
             var entity = _context.Appointments.SingleOrDefault(x => x.Id == id);

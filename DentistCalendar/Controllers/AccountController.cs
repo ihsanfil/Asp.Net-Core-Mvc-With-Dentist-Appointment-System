@@ -43,7 +43,7 @@ namespace DentistCalendar.Controllers
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
             if (result.Succeeded)
             {
-              return  RedirectToAction("Index", "Home");
+              return  RedirectToAction("Index", "Profile");
             }
             ModelState.AddModelError(String.Empty, "Oturum açarken bir hata oluştu !");
             return View(model);
