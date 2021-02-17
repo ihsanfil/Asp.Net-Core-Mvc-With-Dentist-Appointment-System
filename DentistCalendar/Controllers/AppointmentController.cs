@@ -16,83 +16,94 @@ namespace DentistCalendar.Controllers
         public AppointmentController(ApplicationDbContext context)
         {
             _context = context;
-        }       
-        public JsonResult GetAppointment()
+        }
+
+        public JsonResult GetAppointments()
         {
-            var model = _context.Appointments.Include(x => x.User).Select(x => new AppointmentViewModel() //Randevuları ve ona ait doktorları getir
-            {
-                Id = x.Id,
-                Dentitst = x.User.Name + " " + x.User.SurName, //doktor
-                PatientName = x.PatientName, //hasta
-                PatientSurName = x.PatientSurName, //hasta
-                StartDate = x.StartDate,
-                EndDate= x.EndDate,
-                Description = x.Description,
-                Color = x.User.Color,
-                UserId = x.UserId
-            });
+            var model = _context.Appointments
+                .Include(x => x.User).Select(x => new AppointmentViewModel()
+                {
+                    Id = x.Id,
+                    Dentist = x.User.Name + " " + x.User.SurName,
+                    PatientName = x.PatientName,
+                    PatientSurname = x.PatientSurname,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Description = x.Description,
+                    Color = x.User.Color,
+                    UserId = x.User.Id
+                });
+
             return Json(model);
         }
-        public JsonResult GetAppointmentsByDentist(string userId="") //id ye göre randevu getir
+
+        public JsonResult GetAppointmentsByDentist(string userId = "")
         {
-            var model = _context.Appointments.Where(x=>x.UserId == userId)
-                .Include(x => x.User).Select(x => new AppointmentViewModel() 
-            {
-                Dentitst = x.User.Name + " " + x.User.SurName,
-                PatientName = x.PatientName, 
-                PatientSurName =  x.PatientSurName, 
-                StartDate = x.StartDate,
-                EndDate = x.EndDate,
-                Description = x.Description,
-                Color = x.User.Color,
-                UserId = x.UserId
-            });
+            var model = _context.Appointments.Where(x => x.UserId == userId)
+                .Include(x => x.User).Select(x => new AppointmentViewModel()
+                {
+                    Id = x.Id,
+                    Dentist = x.User.Name + " " + x.User.SurName,
+                    PatientName = x.PatientName,
+                    PatientSurname = x.PatientSurname,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Description = x.Description,
+                    Color = x.User.Color,
+                    UserId = x.User.Id
+                });
+
             return Json(model);
         }
+
         [HttpPost]
         public JsonResult AddOrUpdateAppointment(AddOrUpdateAppointmentModel model)
         {
-            if (model.Id == 0) //id sıfırsa ekleme işlemi değilse güncelleme işlemi
+            //Validasyon
+            if (model.Id == 0)
             {
-                Appointment entity = new Appointment() //databaseden gelen entity
+                Appointment entity = new Appointment()
                 {
                     CreatedDate = DateTime.Now,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     PatientName = model.PatientName,
-                    PatientSurName = model.PatientSurName,
+                    PatientSurname = model.PatientSurname,
                     Description = model.Description,
                     UserId = model.UserId
                 };
 
-                _context.Add(entity); //veritabanına randevu kaydını ekledik
-                _context.SaveChanges(); //veritabanını kaydettik
+                _context.Add(entity);
+                _context.SaveChanges();
             }
             else
             {
                 var entity = _context.Appointments.SingleOrDefault(x => x.Id == model.Id);
                 if (entity == null)
                 {
-                    return Json("Güncellenecek veri bulunamadı");
+                    return Json("Güncellenecek veri bulunamadı.");
                 }
                 entity.UpdatedDate = DateTime.Now;
                 entity.PatientName = model.PatientName;
-                entity.PatientSurName = model.PatientSurName;
+                entity.PatientSurname = model.PatientSurname;
                 entity.Description = model.Description;
                 entity.StartDate = model.StartDate;
                 entity.EndDate = model.EndDate;
                 entity.UserId = model.UserId;
+
                 _context.Update(entity);
                 _context.SaveChanges();
             }
+
             return Json("200");
         }
-        public JsonResult DeleteAppointment(int id = 0) //Randevu silme işlemi
+
+        public JsonResult DeleteAppointment(int id = 0)
         {
             var entity = _context.Appointments.SingleOrDefault(x => x.Id == id);
             if (entity == null)
             {
-                return Json("Kayıt Bulunamadı");
+                return Json("Kayıt bulunamadı.");
             }
             _context.Remove(entity);
             _context.SaveChanges();

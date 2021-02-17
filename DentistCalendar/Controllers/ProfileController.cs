@@ -31,7 +31,7 @@ namespace DentistCalendar.Controllers
                 {
                     User = user,
                     Dentists = dentists,
-                    DentistSelectList = dentists.Select(n => new SelectListItem() {
+                    DentistsSelectList = dentists.Select(n => new SelectListItem() {
                         Value = n.Id,
                         Text = $"Dt. {n.Name} {n.SurName}"
                     }).ToList()

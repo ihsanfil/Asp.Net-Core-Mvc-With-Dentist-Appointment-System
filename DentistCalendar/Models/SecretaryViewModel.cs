@@ -11,6 +11,6 @@ namespace DentistCalendar.Models
     {
         public AppUser User { get; set; }
         public IEnumerable<AppUser> Dentists { get; set; }
-        public List<SelectListItem> DentistSelectList { get; internal set; }
+        public List<SelectListItem> DentistsSelectList { get; internal set; }
     }
 }
