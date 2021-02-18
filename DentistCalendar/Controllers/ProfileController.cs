@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using DentistCalendar.Data.Entity;
 using DentistCalendar.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DentistCalendar.Controllers
 {
+    [Authorize(Roles ="Secretary,Dentist")] //Bu controller'a erişebilecek olan roller 
     public class ProfileController : Controller
     {
         private UserManager<AppUser> _userManager;
@@ -58,6 +60,7 @@ namespace DentistCalendar.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "Dentist")] //Bu controller'a erişebilecek olan roller 
         public IActionResult Dentist()
         {
             return View();
