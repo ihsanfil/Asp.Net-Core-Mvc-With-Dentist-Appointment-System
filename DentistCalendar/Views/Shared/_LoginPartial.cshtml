@@ -4,7 +4,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Hello @User.Identity.Name!</a>
+            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Merhaba @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
             <a asp-action="Logout" asp-controller="Account" class="nav-link btn btn-link text-dark">Çıkış Yap</a>

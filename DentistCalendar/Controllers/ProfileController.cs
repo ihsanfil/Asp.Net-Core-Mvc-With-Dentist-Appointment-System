@@ -40,7 +40,18 @@ namespace DentistCalendar.Controllers
             }
             else
             {
-                return View("Dentist");
+                var dentists = _userManager.Users.Where(x => x.IsDentist);
+                SecretaryViewModel model = new SecretaryViewModel()
+                {
+                    User = user,
+                    Dentists = dentists,
+                    DentistsSelectList = dentists.Select(n => new SelectListItem()
+                    {
+                        Value = n.Id,
+                        Text = $"Dt. {n.Name} {n.SurName}"
+                    }).ToList()
+                };
+                return View("Dentist", model);
             }
         }
         public IActionResult Secretary()
